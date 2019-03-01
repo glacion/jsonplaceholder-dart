@@ -1,6 +1,6 @@
-library json_placeholder;
+library jsonplaceholder;
 
-export 'src/json_placeholder.dart';
+export 'src/jsonplaceholder.dart';
 export 'src/model/album.dart';
 export 'src/model/comment.dart';
 export 'src/model/photo.dart';

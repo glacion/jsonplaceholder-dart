@@ -271,7 +271,7 @@ class JSONPlaceholder {
   /// Returns the `http.Response` of the request.
   Future<http.Response> _patch(Model item, String route) async =>
       await _client.patch(
-        Uri.https(_BASE_URL, route),
+        Uri.https(_BASE_URL, '$route/${item.id}'),
         body: json.encode(item),
         headers: {"Content-type": "application/json; charset=UTF-8"},
       );
