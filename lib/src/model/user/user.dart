@@ -2,7 +2,7 @@ import 'package:jsonplaceholder/src/model/user/address.dart';
 import 'package:jsonplaceholder/src/model/user/company.dart';
 import 'package:jsonplaceholder/src/model/model.dart';
 
-class User extends Model{
+class User extends Model {
   static const _KEY_ID = "id";
   static const _KEY_NAME = "name";
   static const _KEY_USERNAME = "username";
@@ -56,7 +56,7 @@ class User extends Model{
 
   @override
   int get id => _id;
-  
+
   @override
   String toString() => toJson().toString();
 }
