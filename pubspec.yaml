@@ -1,5 +1,5 @@
 name: jsonplaceholder
-description: API Binding library for jsonplaceholder.
+description: Package that provides API bindings for https://jsonplaceholder.typicode.com/
 version: 1.0.0
 homepage: https://github.com/glacion/jsonplaceholder-dart
 author: Ahmetcan Guvendiren <ahmtcngvndrn@gmail.com>
