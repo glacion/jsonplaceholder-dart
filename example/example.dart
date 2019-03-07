@@ -8,6 +8,7 @@ main(List<String> args) async {
   var posts = await api.getPosts();
   var postsLength = await posts.length;
   print('Size of posts is $postsLength');
+
   // GET filtered Post objects
   var filteredPosts = await api.getPosts(userId: 1);
   var filteredPostsLength = await filteredPosts.length;

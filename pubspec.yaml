@@ -1,6 +1,6 @@
 name: jsonplaceholder
 description: Package that provides API bindings for https://jsonplaceholder.typicode.com/
-version: 1.1.1
+version: 2.0.0
 homepage: https://github.com/glacion/jsonplaceholder-dart
 author: Ahmetcan Guvendiren <ahmtcngvndrn@gmail.com>
 
@@ -9,4 +9,4 @@ environment:
 
 dependencies:
   http: ^0.12.0
-  meta: ^1.1.7
+  meta: ^1.1.6

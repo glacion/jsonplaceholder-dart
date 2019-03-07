@@ -81,86 +81,77 @@ class JSONPlaceholder {
   }
 
   /// Returns an `Uri` for given [route] and [params].
-  /// Used for `Stream` requests.
+  /// Used for `List` requests.
   ///
   /// Example: `https://jsonplaceholder.typicode.com/posts?userId=1`
-  Uri _getStreamUri(String route, String query, int id) =>
+  Uri _getListUri(String route, [String query, int id]) =>
       id == null || query == null
           ? Uri.https(_BASE_URL, route)
           : Uri.https(_BASE_URL, route, {query: id.toString()});
 
-  /// Asynchronous generator function that returns a `Stream` of `dynamic` objects from given [uri].
-  Stream<dynamic> _getStream(Uri uri) async* {
-    var response = await _client.send(http.Request('GET', uri));
-    var stream = response.stream
-        .transform(utf8.decoder)
-        .transform(json.decoder)
-        .expand((body) => body);
-    await for (dynamic item in stream) yield item;
-  }
-
-  /// Asynchronous generator function that returns a `Stream` of `Post` objects.
+  /// Returns the `List` of `Post` objects.
   ///
-  /// When [userId] is used; the stream only contains the `Post` objects with the given userId.
-  Stream<Post> getPosts({int userId}) async* {
-    var uri = _getStreamUri(_ROUTE_POSTS, _QUERY_USER_ID, userId);
-    var stream = _getStream(uri).map(
-      (post) => Post.fromJson(post),
-    );
-    await for (Post item in stream) yield item;
+  /// When [userId] is used; the list only contains the `Post` objects with the given userId.
+  Future<List<Post>> getPosts({int userId}) async {
+    var uri = _getListUri(_ROUTE_POSTS, _QUERY_USER_ID, userId);
+    var response = await _client.get(uri);
+    var res = List<Post>();
+    for (var item in json.decode(response.body)) res.add(Post.fromJson(item));
+    return res;
   }
 
-  /// Asynchronous generator function that returns a `Stream` of `Comment` objects.
+  /// Returns the `List` of `Comment` objects.
   ///
-  /// When [postId] is used; the stream only contains the `Comment` objects with the given postId.
-  Stream<Comment> getComments({int postId}) async* {
-    var uri = _getStreamUri(_ROUTE_COMMENTS, _QUERY_POST_ID, postId);
-    var stream = _getStream(uri).map(
-      (comment) => Comment.fromJson(comment),
-    );
-    await for (Comment item in stream) yield item;
+  /// When [postId] is used; the list only contains the `Comment` objects with the given userId.
+  Future<List<Comment>> getComments({int postId}) async {
+    var uri = _getListUri(_ROUTE_POSTS, _QUERY_POST_ID, postId);
+    var response = await _client.get(uri);
+    var res = List<Comment>();
+    for (var item in json.decode(response.body))
+      res.add(Comment.fromJson(item));
+    return res;
   }
 
-  /// Asynchronous generator function that returns a `Stream` of `Album` objects.
+  /// Returns the `List` of `Album` objects.
   ///
-  /// When [userId] is used; the stream only contains the `Album` objects belonging to the user with given userId.
-  Stream<Album> getAlbums({int userId}) async* {
-    var uri = _getStreamUri(_ROUTE_ALBUMS, _QUERY_USER_ID, userId);
-    var stream = _getStream(uri).map(
-      (album) => Album.fromJson(album),
-    );
-    await for (Album item in stream) yield item;
+  /// When [userId] is used; the list only contains the `Album` objects with the given userId.
+  Future<List<Album>> getAlbums({int userId}) async {
+    var uri = _getListUri(_ROUTE_POSTS, _QUERY_USER_ID, userId);
+    var response = await _client.get(uri);
+    var res = List<Album>();
+    for (var item in json.decode(response.body)) res.add(Album.fromJson(item));
+    return res;
   }
 
-  /// Asynchronous generator function that returns a `Stream` of `Photo` objects.
+  /// Returns the `List` of `Photo` objects.
   ///
-  /// When [albumId] is used; the stream only contains the `Photo` objects in the album with given albumId.
-  Stream<Photo> getPhotos({int albumId}) async* {
-    var uri = _getStreamUri(_ROUTE_PHOTOS, _QUERY_ALBUM_ID, albumId);
-    var stream = _getStream(uri).map(
-      (photo) => Photo.fromJson(photo),
-    );
-    await for (Photo item in stream) yield item;
+  /// When [albumId] is used; the list only contains the `Photo` objects with the given albumId.
+  Future<List<Photo>> getPhotos({int albumId}) async {
+    var uri = _getListUri(_ROUTE_POSTS, _QUERY_ALBUM_ID, albumId);
+    var response = await _client.get(uri);
+    var res = List<Photo>();
+    for (var item in json.decode(response.body)) res.add(Photo.fromJson(item));
+    return res;
   }
 
-  /// Asynchronous generator function that returns a `Stream` of `Todo` objects.
+  /// Returns the `List` of `Todo` objects.
   ///
-  /// When [userId] is used; the stream only contains the `Todo` objects with the given userId.
-  Stream<Todo> getTodos({int userId}) async* {
-    var uri = _getStreamUri(_ROUTE_TODOS, _QUERY_USER_ID, userId);
-    var stream = _getStream(uri).map(
-      (todo) => Todo.fromJson(todo),
-    );
-    await for (Todo item in stream) yield item;
+  /// When [userId] is used; the list only contains the `Todo` objects with the given userId.
+  Future<List<Todo>> getTodos({int userId}) async {
+    var uri = _getListUri(_ROUTE_POSTS, _QUERY_USER_ID, userId);
+    var response = await _client.get(uri);
+    var res = List<Todo>();
+    for (var item in json.decode(response.body)) res.add(Todo.fromJson(item));
+    return res;
   }
 
-  /// Asynchronous generator function that returns a `Stream` of `User` objects.
-  Stream<User> getUsers() async* {
-    var uri = Uri.https(_BASE_URL, _ROUTE_USERS);
-    var stream = _getStream(uri).map(
-      (user) => User.fromJson(user),
-    );
-    await for (User item in stream) yield item;
+  /// Returns the `List` of `User` objects.
+  Future<List<User>> getUsers() async {
+    var uri = _getListUri(_ROUTE_USERS);
+    var response = await _client.get(uri);
+    var res = List<User>();
+    for (var item in json.decode(response.body)) res.add(User.fromJson(item));
+    return res;
   }
 
   /// Makes a delete request with the route and id.
