@@ -1,45 +1,30 @@
-import 'package:jsonplaceholder/src/model/model.dart';
+library photo;
 
-class Photo extends Model {
-  static const _KEY_ALBUM_ID = "albumId";
-  static const _KEY_ID = "id";
-  static const _KEY_TITLE = "title";
-  static const _KEY_URL = "url";
-  static const _KEY_THUMBNAIL_URL = "thumbnailUrl";
+import 'dart:convert';
 
-  final int _id;
-  int albumId;
-  String title;
-  String url;
-  String thumbnailUrl;
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:jsonplaceholder/src/model/serializers.dart';
 
-  Photo(
-    this.albumId,
-    this.title,
-    this.url,
-    this.thumbnailUrl, [
-    this._id,
-  ]);
+part 'photo.g.dart';
 
-  Photo.fromJson(Map<String, dynamic> map)
-      : albumId = map[_KEY_ALBUM_ID],
-        _id = map[_KEY_ID],
-        title = map[_KEY_TITLE],
-        url = map[_KEY_URL],
-        thumbnailUrl = map[_KEY_THUMBNAIL_URL];
+abstract class Photo implements Built<Photo, PhotoBuilder> {
+  Photo._();
 
-  @override
-  Map<String, dynamic> toJson() => {
-        _KEY_ALBUM_ID: albumId,
-        _KEY_ID: _id,
-        _KEY_TITLE: title,
-        _KEY_URL: url,
-        _KEY_THUMBNAIL_URL: thumbnailUrl
-      };
+  factory Photo([updates(PhotoBuilder b)]) = _$Photo;
 
-  @override
-  int get id => _id;
+  @nullable
+  int get id;
+  int get albumId;
+  String get title;
+  String get url;
+  String get thumbnailUrl;
 
-  @override
-  String toString() => toJson().toString();
+  String toJson() =>
+      json.encode(serializers.serializeWith(Photo.serializer, this));
+
+  static Photo fromJson(String jsonString) =>
+      serializers.deserializeWith(Photo.serializer, json.decode(jsonString));
+
+  static Serializer<Photo> get serializer => _$photoSerializer;
 }

@@ -1,40 +1,29 @@
-import 'package:jsonplaceholder/src/model/model.dart';
+library todo;
 
-class Todo extends Model {
-  static const _KEY_USER_ID = "userId";
-  static const _KEY_ID = "id";
-  static const _KEY_TITLE = "title";
-  static const _KEY_COMPLETED = "completed";
+import 'dart:convert';
 
-  final int _id;
-  int userId;
-  String title;
-  bool completed;
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:jsonplaceholder/src/model/serializers.dart';
 
-  Todo(
-    this.userId,
-    this.title,
-    this.completed, [
-    this._id,
-  ]);
+part 'todo.g.dart';
 
-  Todo.fromJson(Map<String, dynamic> map)
-      : userId = map[_KEY_USER_ID],
-        _id = map[_KEY_ID],
-        title = map[_KEY_TITLE],
-        completed = map[_KEY_COMPLETED];
+abstract class Todo implements Built<Todo, TodoBuilder> {
+  Todo._();
 
-  @override
-  Map<String, dynamic> toJson() => {
-        _KEY_USER_ID: userId,
-        _KEY_ID: _id,
-        _KEY_TITLE: title,
-        _KEY_COMPLETED: completed
-      };
+  factory Todo([updates(TodoBuilder b)]) = _$Todo;
 
-  @override
-  int get id => _id;
+  @nullable
+  int get id;
+  int get userId;
+  String get title;
+  bool get completed;
 
-  @override
-  String toString() => toJson().toString();
+  String toJson() =>
+      json.encode(serializers.serializeWith(Todo.serializer, this));
+
+  static Todo fromJson(String jsonString) =>
+      serializers.deserializeWith(Todo.serializer, json.decode(jsonString));
+
+  static Serializer<Todo> get serializer => _$todoSerializer;
 }

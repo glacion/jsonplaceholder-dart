@@ -1,35 +1,32 @@
-import 'package:jsonplaceholder/src/model/model.dart';
+library album;
 
-class Album extends Model {
-  static const _KEY_USER_ID = "userId";
-  static const _KEY_ID = "id";
-  static const _KEY_TITLE = "title";
+import 'dart:convert';
 
-  final int _id;
-  int userId;
-  String title;
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:jsonplaceholder/src/model/serializers.dart';
 
-  Album(
-    this.userId,
-    this.title, [
-    this._id,
-  ]);
+part 'album.g.dart';
 
-  Album.fromJson(Map<String, dynamic> map)
-      : userId = map[_KEY_USER_ID],
-        _id = map[_KEY_ID],
-        title = map[_KEY_TITLE];
+abstract class Album implements Built<Album, AlbumBuilder> {
+  Album._();
 
-  @override
-  Map<String, dynamic> toJson() => {
-        _KEY_USER_ID: userId,
-        _KEY_ID: _id,
-        _KEY_TITLE: title,
-      };
+  factory Album([updates(AlbumBuilder b)]) = _$Album;
 
-  @override
-  int get id => _id;
+  @BuiltValueField(wireName: 'userId')
+  int get userId;
+  @BuiltValueField(wireName: 'id')
+  int get id;
+  @BuiltValueField(wireName: 'title')
+  String get title;
+  String toJson() {
+    return json.encode(serializers.serializeWith(Album.serializer, this));
+  }
 
-  @override
-  String toString() => toJson().toString();
+  static Album fromJson(String jsonString) {
+    return serializers.deserializeWith(
+        Album.serializer, json.decode(jsonString));
+  }
+
+  static Serializer<Album> get serializer => _$albumSerializer;
 }

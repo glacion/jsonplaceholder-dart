@@ -1,40 +1,29 @@
-import 'package:jsonplaceholder/src/model/model.dart';
+library post;
 
-class Post extends Model {
-  static const _KEY_USER_ID = "userId";
-  static const _KEY_ID = "id";
-  static const _KEY_TITLE = "title";
-  static const _KEY_BODY = "body";
+import 'dart:convert';
 
-  final int _id;
-  int userId;
-  String title;
-  String body;
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+import 'package:jsonplaceholder/src/model/serializers.dart';
 
-  Post(
-    this.userId,
-    this.title,
-    this.body, [
-    this._id,
-  ]);
+part 'post.g.dart';
 
-  Post.fromJson(Map<String, dynamic> map)
-      : userId = map[_KEY_USER_ID],
-        _id = map[_KEY_ID],
-        title = map[_KEY_TITLE],
-        body = map[_KEY_BODY];
+abstract class Post implements Built<Post, PostBuilder> {
+  Post._();
 
-  @override
-  Map<String, dynamic> toJson() => {
-        _KEY_USER_ID: userId,
-        _KEY_ID: _id,
-        _KEY_TITLE: title,
-        _KEY_BODY: body,
-      };
+  factory Post([updates(PostBuilder b)]) = _$Post;
 
-  @override
-  int get id => _id;
+  @nullable
+  int get id;
+  int get userId;
+  String get title;
+  String get body;
 
-  @override
-  String toString() => toJson().toString();
+  String toJson() =>
+      json.encode(serializers.serializeWith(Post.serializer, this));
+
+  static Post fromJson(String jsonString) =>
+      serializers.deserializeWith(Post.serializer, json.decode(jsonString));
+
+  static Serializer<Post> get serializer => _$postSerializer;
 }
