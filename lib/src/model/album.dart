@@ -13,20 +13,15 @@ abstract class Album implements Built<Album, AlbumBuilder> {
 
   factory Album([updates(AlbumBuilder b)]) = _$Album;
 
-  @BuiltValueField(wireName: 'userId')
   int get userId;
-  @BuiltValueField(wireName: 'id')
   int get id;
-  @BuiltValueField(wireName: 'title')
   String get title;
-  String toJson() {
-    return json.encode(serializers.serializeWith(Album.serializer, this));
-  }
 
-  static Album fromJson(String jsonString) {
-    return serializers.deserializeWith(
-        Album.serializer, json.decode(jsonString));
-  }
+  String toJson() =>
+      json.encode(serializers.serializeWith(Album.serializer, this));
+
+  static Album fromJson(String jsonString) =>
+      serializers.deserializeWith(Album.serializer, json.decode(jsonString));
 
   static Serializer<Album> get serializer => _$albumSerializer;
 }
