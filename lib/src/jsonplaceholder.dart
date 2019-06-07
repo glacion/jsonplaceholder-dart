@@ -168,5 +168,39 @@ class JSONPlaceholder {
     return User.fromJson(response.body);
   }
 
+  Future<Response> _put(String body, String route, int id) async => _client.put(
+        Uri.https(_BASE_URL, "$route/$id"),
+        body: body,
+        headers: {"Content-type": "application/json; charset=UTF-8"},
+      );
 
+  Future<Album> updateAlbum(Album album) async {
+    var response = await _put(album.toJson(), _ROUTE_ALBUMS, album.id);
+    return Album.fromJson(response.body);
+  }
+
+  Future<Comment> updateComment(Comment comment) async {
+    var response = await _put(comment.toJson(), _ROUTE_COMMENTS, comment.id);
+    return Comment.fromJson(response.body);
+  }
+
+  Future<Photo> updatePhoto(Photo photo) async {
+    var response = await _put(photo.toJson(), _ROUTE_PHOTOS, photo.id);
+    return Photo.fromJson(response.body);
+  }
+
+  Future<Post> updatePost(Post post) async {
+    var response = await _put(post.toJson(), _ROUTE_POSTS, post.id);
+    return Post.fromJson(response.body);
+  }
+
+  Future<Todo> updateTodo(Todo todo) async {
+    var response = await _put(todo.toJson(), _ROUTE_TODOS, todo.id);
+    return Todo.fromJson(response.body);
+  }
+
+  Future<User> updateUser(User user) async {
+    var response = await _put(user.toJson(), _ROUTE_USERS, user.id);
+    return User.fromJson(response.body);
+  }
 }
