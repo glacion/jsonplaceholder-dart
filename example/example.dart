@@ -45,7 +45,9 @@ main(List<String> args) async {
 
   // Create Album object matching the id.
   // Method returns the patched object.
-  Album album = Album(1, 'title', 1);
+  Album album = Album().rebuild((b) => b
+    ..title = "Title"
+    ..userId = 1);
   album = await api.patchAlbum(album);
   print(album);
 
