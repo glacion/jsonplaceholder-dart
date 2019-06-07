@@ -203,4 +203,37 @@ class JSONPlaceholder {
     var response = await _put(user.toJson(), _ROUTE_USERS, user.id);
     return User.fromJson(response.body);
   }
+
+  void _delete(String route, int id) async =>
+      await _client.delete(Uri.https(_BASE_URL, '$route/$id'));
+
+  void deleteAlbum(Album album) async => await _delete(
+        _ROUTE_ALBUMS,
+        album.id,
+      );
+
+  void deleteComment(Comment comment) async => await _delete(
+        _ROUTE_COMMENTS,
+        comment.id,
+      );
+
+  void deletePhoto(Photo photo) async => await _delete(
+        _ROUTE_PHOTOS,
+        photo.id,
+      );
+
+  void deletePost(Post post) async => await _delete(
+        _ROUTE_POSTS,
+        post.id,
+      );
+
+  void deleteTodo(Todo todo) async => await _delete(
+        _ROUTE_TODOS,
+        todo.id,
+      );
+
+  void deleteUser(User user) async => await _delete(
+        _ROUTE_USERS,
+        user.id,
+      );
 }
